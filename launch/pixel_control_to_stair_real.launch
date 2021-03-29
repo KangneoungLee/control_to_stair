@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+     
+
+
+     <arg name="dbg_args"   default="gdb -ex run --args"/>
+     <arg name="debug_args"   default=""/>
+
+     <node pkg="control_to_stair" type="pixel_control_to_stair_ros" name="pixel_control_to_stair_ros_node" launch-prefix="$(arg debug_args)" output="screen">
+          <param name="update_rate"            value="5"/>
+          <param name="stair_center_pixel_sub_topic"    value="front_cam/camera/center_pixel"/>
+          <param name="control_to_stair_cmd_vel_topic"    value="stair_nav/cmd_vel_stair"/>
+          <param name="control_to_stair_flag_topic"    value="stair_nav/cmd_vel_stair_flag"/>
+          <param name="TP_rotation_start_threshold"    value="100"/>
+          <param name="TP_rotation_end_threshold"    value="75"/>
+          <param name="TP_angular_vel_p_gain"    value="0.0005"/>
+          <param name="TP_duration_for_reset_target"    value="1.5"/>
+          <param name="TP_weight_of_lpf"    value="0.15"/>
+          <param name="TP_linear_vel"    value="0.1"/>
+          <param name="TP_target_row_center"    value="424"/>
+          <param name="TP_stair_case_close_tolerance"    value="2"/>
+          <param name="TP_detection_count_th"    value="3"/>
+
+
+          <param name="detect_trigger_flag_sub_topic"    value="detec_logic_trigger"/>
+
+
+<!-- pre searching parameter -->
+          <param name="TP_presearch_enable_flag"    value="false"/>
+          <param name="TP_presearch_ang_vel"    value="0.05"/>
+          <param name="_TP_presearch_duration_for_interval"    value="1"/>
+          <param name="_TP_presearch_interval_num"    value="6"/>
+          
+
+          
+                 
+     </node>
+
+
+</launch>

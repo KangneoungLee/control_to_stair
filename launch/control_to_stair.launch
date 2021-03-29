@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+     
+
+
+     <arg name="dbg_args"   default="gdb -ex run --args"/>
+     <arg name="debug_args"   default=""/>
+
+     <node pkg="control_to_stair" type="control_to_stair_ros" name="control_to_stair_ros_node" launch-prefix="$(arg debug_args)" output="screen">
+          <param name="update_rate"            value="5"/>
+          <param name="stair_pos_sub_topic"    value="front_cam/camera/stair_pose"/>
+          <param name="control_to_stair_cmd_vel_topic"    value="stair_nav/cmd_vel_stair"/>
+          <param name="stair_center_pixel_sub_topic"    value="front_cam/camera/center_pixel"/>
+          <param name="detect_trigger_flag_sub_topic"    value="detec_logic_trigger"/>
+          <param name="control_to_stair_flag_topic"    value="stair_nav/cmd_vel_stair_flag"/>
+
+
+          <param name="TP_probability_control_th"    value="50"/>  <!-- unit : % -->
+          <param name="TP_probability_clip_th"    value="70"/>  <!-- unit : % -->
+          <param name="TP_duration_for_forget_target"    value="2"/>  <!-- unit : sec --> 
+          <param name="probability_type"    value="linear"/>    <!-- linear and geo_series -->
+          <param name="TP_probability_update_radius_th"    value="2"/> <!-- unit : m-->
+          
+
+          <param name="TP_stair_case_close_tolerance"    value="1.5"/>  <!-- unit : m -->
+          <param name="TP_directctrl_dist_th"    value="3"/>  <!-- unit : m -->      
+
+          <param name="world_frame"    value="map"/>       
+     </node>
+
+ <node pkg="tf" type="static_transform_publisher" name="map_to_camera_aligned_depth_to_color_frame" respawn="true" args="0.0 0.0 0.2 -1.57 0.0 -1.57  base_link camera_aligned_depth_to_color_frame 100.0" /> 
+
+</launch>
