@@ -304,8 +304,12 @@ void PIXEL_CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::pixel_stairloc
 	 //ROS_INFO("_filtered_row_center : %f", this->_filtered_row_center);
 	 //ROS_INFO("_filtered_depth_data : %f", this->_filtered_depth_data);
 	
+	 _lock.lock();
+	
 	 this->_update_time = ros::Time::now();
 	 this->_vel_reset_flag = false;
+	 
+	 _lock.unlock();
 }
 
 void PIXEL_CONTROL_TO_STAIR_ROS::presearching()
@@ -569,11 +573,14 @@ void PIXEL_CONTROL_TO_STAIR_ROS::loop()
 		{  
 		    this->_detection_count = 0;
 			this->_cmd_vel_ok_flag = false;
-		}		
+		}
+
+        this->_update_time = ros::Time::now();
+		
 	}
 	else
 	{
-		
+		/*intentionally empty*/
 	}
 	
 	if(this->_detection_count>this->_TP_detection_count_th)

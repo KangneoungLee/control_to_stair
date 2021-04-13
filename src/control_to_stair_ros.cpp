@@ -337,7 +337,11 @@ void CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::stairlocationConstPt
 			 if(this->stair_container_first->stair_container_empty_flag_return()==true)
 	        {
 		         this->stair_container_first->stair_container_prob_pos_update( point_out_single.point.x,point_out_single.point.y,point_out_single.point.z,true);
+				 
+				 _lock.lock();
 				 this->_update_time_first = ros::Time::now();
+				 _lock.unlock();
+				 
 				 continue;
 	         }
 	         else
@@ -353,7 +357,11 @@ void CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::stairlocationConstPt
 				 if(distance_sq<this->_TP_probability_update_radius_th^2)
 				 {
 					 this->stair_container_first->stair_container_prob_pos_update( point_out_single.point.x,point_out_single.point.y,point_out_single.point.z,true);
+					  
+					  _lock.lock();
 					 this->_update_time_first = ros::Time::now();
+					 _lock.unlock();
+					 
 					 continue;
 				 }
 				 
@@ -362,7 +370,11 @@ void CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::stairlocationConstPt
 			 if(this->stair_container_second->stair_container_empty_flag_return()==true)
 	        {
 		         this->stair_container_second->stair_container_prob_pos_update( point_out_single.point.x,point_out_single.point.y,point_out_single.point.z,true);
+				 
+				  _lock.lock();
 				 this->_update_time_second = ros::Time::now();
+				  _lock.unlock();
+				  
 				 continue;
 	        }
              else
@@ -378,7 +390,11 @@ void CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::stairlocationConstPt
 				 if(distance_sq<this->_TP_probability_update_radius_th^2)
 				 {
 					 this->stair_container_second->stair_container_prob_pos_update( point_out_single.point.x,point_out_single.point.y,point_out_single.point.z,true);
+					 
+					 _lock.lock();
 					 this->_update_time_second = ros::Time::now();
+					  _lock.unlock();
+					  
 					 continue;
 				 }
 
@@ -577,6 +593,7 @@ void CONTROL_TO_STAIR_ROS::loop()
 		if((elapse_time_first>ros::Duration(this->_TP_duration_for_forget_target))&&(this->stair_container_first->stair_container_pob_return()<this->_TP_probability_clip_th))
 		{
 			this->stair_container_first->stair_container_prob_forget();
+			this->_update_time_first = ros::Time::now();
 		}
 	}
 		
@@ -585,6 +602,7 @@ void CONTROL_TO_STAIR_ROS::loop()
 		if((elapse_time_second>ros::Duration(this->_TP_duration_for_forget_target))&&(this->stair_container_second->stair_container_pob_return()<this->_TP_probability_clip_th))
 		{
 			this->stair_container_second->stair_container_prob_forget();
+			this->_update_time_second = ros::Time::now();
 		}
 	}
 	
