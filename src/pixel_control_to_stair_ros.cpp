@@ -4,7 +4,7 @@
 #include <std_msgs/Int8.h>
 #include <mutex>
 #include <boost/bind.hpp>
-#include <stair_detection/pixel_stairlocation.h>
+#include <stair_custom_msg/pixel_stairlocation.h>
 #include "control_to_stair/stair_container.h"
 //#include <move_base_msgs/MoveBaseAction.h>
 //#include <actionlib/server/simple_action_server.h>
@@ -97,7 +97,7 @@ class PIXEL_CONTROL_TO_STAIR_ROS{
 		void presearching();
 		void presearching_reset();
 		void control_reset();
-		void executeCB(const stair_detection::pixel_stairlocationConstPtr &stair_pixel_pose_vec, int value);
+		void executeCB(const stair_custom_msg::pixel_stairlocationConstPtr &stair_pixel_pose_vec, int value);
 		
 		void executeCB_detect_trigger_flag(const std_msgs::Int8::ConstPtr& msg,int value);
 	 
@@ -188,7 +188,7 @@ PIXEL_CONTROL_TO_STAIR_ROS::PIXEL_CONTROL_TO_STAIR_ROS(ros::NodeHandle m_nh, ros
 	 this->_TP_presearch_ang_vel = TP_presearch_ang_vel;
 	 
 	 
-	 this->_stair_center_pixel_sub = main_nh.subscribe<stair_detection::pixel_stairlocation>(stair_center_pixel_sub_topic, 1, boost::bind(&PIXEL_CONTROL_TO_STAIR_ROS::executeCB, this,_1,0));
+	 this->_stair_center_pixel_sub = main_nh.subscribe<stair_custom_msg::pixel_stairlocation>(stair_center_pixel_sub_topic, 1, boost::bind(&PIXEL_CONTROL_TO_STAIR_ROS::executeCB, this,_1,0));
 	 this->_detec_trigger_sub = main_nh.subscribe<std_msgs::Int8>(detect_trigger_flag_sub_topic, 1, boost::bind(&PIXEL_CONTROL_TO_STAIR_ROS::executeCB_detect_trigger_flag, this,_1,0));  
 	 this->_cmd_vel_pub = main_nh.advertise<geometry_msgs::Twist>(control_to_stair_cmd_vel_topic, 2);
 	 this->_flag_pub = main_nh.advertise<std_msgs::Int8>(control_to_stair_flag_topic,2);
@@ -226,7 +226,7 @@ void PIXEL_CONTROL_TO_STAIR_ROS::executeCB_detect_trigger_flag(const std_msgs::I
 
 
 
-void PIXEL_CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::pixel_stairlocationConstPtr &stair_pixel_pose_vec, int value)
+void PIXEL_CONTROL_TO_STAIR_ROS::executeCB(const stair_custom_msg::pixel_stairlocationConstPtr &stair_pixel_pose_vec, int value)
 {
 	 //ROS_INFO("debug_line2");
 	

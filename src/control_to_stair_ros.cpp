@@ -17,7 +17,7 @@
 #include <mutex>
 #include <boost/bind.hpp>
 
-#include <stair_detection/stairlocation.h>
+#include <stair_custom_msg/stairlocation.h>
 #include "control_to_stair/stair_container.h"
 
 
@@ -107,7 +107,7 @@ class CONTROL_TO_STAIR_ROS{
 		void control();
 		void presearching_reset();
 		void control_reset();
-		void executeCB(const stair_detection::stairlocationConstPtr &stair_pose_vec, int value);
+		void executeCB(const stair_custom_msg::stairlocationConstPtr &stair_pose_vec, int value);
 		void odomCB(const nav_msgs::OdometryConstPtr &odom_msg, int value);
 		
 		void executeCB_detect_trigger_flag(const std_msgs::Int8::ConstPtr& msg,int value);
@@ -176,7 +176,7 @@ CONTROL_TO_STAIR_ROS::CONTROL_TO_STAIR_ROS(ros::NodeHandle m_nh, ros::NodeHandle
 	 this->_TP_duration_for_forget_target = TP_duration_for_forget_target;
 	 this->_TP_directctrl_dist_th = TP_directctrl_dist_th;
 	 
-	 this->_stair_pos_sub = main_nh.subscribe<stair_detection::stairlocation>(stair_pos_sub_topic, 1, boost::bind(&CONTROL_TO_STAIR_ROS::executeCB, this,_1,0));
+	 this->_stair_pos_sub = main_nh.subscribe<stair_custom_msg::stairlocation>(stair_pos_sub_topic, 1, boost::bind(&CONTROL_TO_STAIR_ROS::executeCB, this,_1,0));
 	 this->_odom_sub = main_nh.subscribe<nav_msgs::Odometry>(odom_sub_topic, 1, boost::bind(&CONTROL_TO_STAIR_ROS::odomCB, this,_1,0));
 	 this->_detec_trigger_sub = main_nh.subscribe<std_msgs::Int8>(detect_trigger_flag_sub_topic, 1, boost::bind(&CONTROL_TO_STAIR_ROS::executeCB_detect_trigger_flag, this,_1,0));  
 	 this->_flag_pub = main_nh.advertise<std_msgs::Int8>(control_to_stair_flag_topic,2);
@@ -271,7 +271,7 @@ void CONTROL_TO_STAIR_ROS::executeCB_detect_trigger_flag(const std_msgs::Int8::C
 }
 
 
-void CONTROL_TO_STAIR_ROS::executeCB(const stair_detection::stairlocationConstPtr &stair_pose_vec, int value)
+void CONTROL_TO_STAIR_ROS::executeCB(const stair_custom_msg::stairlocationConstPtr &stair_pose_vec, int value)
 {
 	 //ROS_INFO("debug_line2");
 	 
